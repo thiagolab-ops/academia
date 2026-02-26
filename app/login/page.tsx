@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Zap, Lock, Mail, Loader2 } from "lucide-react";
+import BackButton from "@/src/components/ui/BackButton";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -38,6 +39,7 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen bg-black flex flex-col items-center justify-center p-4 relative overflow-hidden">
+            <BackButton />
             {/* Background decorations */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-emerald/10 rounded-full blur-[100px] opacity-50 mix-blend-screen pointer-events-none" />
 
