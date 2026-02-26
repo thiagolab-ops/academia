@@ -3,7 +3,71 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER    // Visitante/Lead
+  MEMBER  // Aluno Matriculado
+  ADMIN   // Dono/Personal
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  password      String?
+  image         String?
+  role          Role      @default(USER)
+  xpPoints      Int       @default(0) // Gamificação
+  planId        String?   // Plano atual (Ouro, Silver)
+  
+  // Relacionamentos
+  workouts      Workout[]
+  measurements  Measurement[]
+  checkIns      CheckIn[]
+  payments      Payment[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Workout {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  title       String   // Ex: Treino A - Peito e Tríceps
+  description String?
+  exercises   Json     // Array de exercícios [{name: "Supino", sets: 3, reps: 12}]
+  assignedBy  String   // Nome do Personal
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model Measurement {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  weight      Float    // Peso em Kg
+  bodyFat     Float?   // Percentual de gordura
+  notes       String?
+  date        DateTime @default(now())
+}
+
+model CheckIn {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  date        DateTime @default(now())
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  amount      Float
+  status      String   @default("PENDING") // PENDING, PAID, OVERDUE
+  dueDate     DateTime
+  paidAt      DateTime?
 }
