@@ -1,8 +1,14 @@
 import "./globals.css";
 
-export const metadata = {
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
     title: "FitPower",
     description: "FitPower Academia",
+    appleWebApp: {
+        capable: true,
+        statusBarStyle: "black-translucent",
+    },
 };
 
 import { Providers } from "./Providers";
