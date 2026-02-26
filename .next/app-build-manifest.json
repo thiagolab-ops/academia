@@ -1,0 +1,55 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-935c250b811ead03.js",
+      "static/chunks/fd9d1056-a88909e547d59cbf.js",
+      "static/chunks/117-b95309357970809e.js",
+      "static/chunks/main-app-63167c01effdd4fa.js",
+      "static/chunks/app/_not-found/page-dbb70fd099628bcf.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-935c250b811ead03.js",
+      "static/chunks/fd9d1056-a88909e547d59cbf.js",
+      "static/chunks/117-b95309357970809e.js",
+      "static/chunks/main-app-63167c01effdd4fa.js",
+      "static/css/113443fcfe40379c.css",
+      "static/chunks/app/layout-48ece50a6fd1a3fc.js"
+    ],
+    "/admin/page": [
+      "static/chunks/webpack-935c250b811ead03.js",
+      "static/chunks/fd9d1056-a88909e547d59cbf.js",
+      "static/chunks/117-b95309357970809e.js",
+      "static/chunks/main-app-63167c01effdd4fa.js",
+      "static/chunks/8-9f031b363bd68b2e.js",
+      "static/chunks/791-466b8f3dae8e6a7c.js",
+      "static/chunks/339-f90037eaa8dcd347.js",
+      "static/chunks/app/admin/page-2fb1b766df6c099c.js"
+    ],
+    "/dashboard/page": [
+      "static/chunks/webpack-935c250b811ead03.js",
+      "static/chunks/fd9d1056-a88909e547d59cbf.js",
+      "static/chunks/117-b95309357970809e.js",
+      "static/chunks/main-app-63167c01effdd4fa.js",
+      "static/chunks/8-9f031b363bd68b2e.js",
+      "static/chunks/791-466b8f3dae8e6a7c.js",
+      "static/chunks/621-2118c6fd4a6a390e.js",
+      "static/chunks/app/dashboard/page-4b0b151e6481f7b9.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-935c250b811ead03.js",
+      "static/chunks/fd9d1056-a88909e547d59cbf.js",
+      "static/chunks/117-b95309357970809e.js",
+      "static/chunks/main-app-63167c01effdd4fa.js",
+      "static/chunks/8-9f031b363bd68b2e.js",
+      "static/chunks/app/page-e93b2267276eb7de.js"
+    ],
+    "/planos-e-aulas/page": [
+      "static/chunks/webpack-935c250b811ead03.js",
+      "static/chunks/fd9d1056-a88909e547d59cbf.js",
+      "static/chunks/117-b95309357970809e.js",
+      "static/chunks/main-app-63167c01effdd4fa.js",
+      "static/chunks/8-9f031b363bd68b2e.js",
+      "static/chunks/app/planos-e-aulas/page-a63e13c2922971a3.js"
+    ]
+  }
+}
