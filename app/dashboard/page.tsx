@@ -56,7 +56,7 @@ export default function Dashboard() {
             { id: "progresso", icon: Activity, label: "Progresso" },
             { id: "conquistas", icon: Trophy, label: "Conquistas" },
             { id: "perfil", icon: User, label: "Perfil" }
-          ].map(item => (
+          ]?.map(item => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
@@ -111,7 +111,7 @@ export default function Dashboard() {
                   { name: "Crucifixo Inclinado", sets: "3x12", weight: "20kg" },
                   { name: "Tríceps Pulley", sets: "4x12", weight: "45kg" },
                   { name: "Tríceps Testa", sets: "3x10", weight: "30kg" }
-                ].map((exercise, i) => (
+                ]?.map((exercise, i) => (
                   <div key={i} className="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group">
                     <div>
                       <h3 className="font-bold text-lg">{exercise.name}</h3>
@@ -137,7 +137,7 @@ export default function Dashboard() {
                 { label: "Peso Atual", value: "77.8 kg", diff: "-4.2 kg" },
                 { label: "Massa Magra", value: "42.1 kg", diff: "+1.5 kg" },
                 { label: "Gordura Corporal", value: "14%", diff: "-3%" }
-              ].map((stat, i) => (
+              ]?.map((stat, i) => (
                 <div key={i} className="glass-panel p-6">
                   <p className="text-white/50 text-sm mb-2">{stat.label}</p>
                   <div className="flex items-end gap-3">
@@ -173,7 +173,7 @@ export default function Dashboard() {
               { title: "Consistência", desc: "10 treinos seguidos", icon: "⚡", unlocked: true },
               { title: "Força Bruta", desc: "Levantou 100kg no supino", icon: "🦍", unlocked: false },
               { title: "Maratonista", desc: "Correu 10km", icon: "🏃", unlocked: false },
-            ].map((badge, i) => (
+            ]?.map((badge, i) => (
               <div key={i} className={`glass-panel p-6 text-center relative overflow-hidden ${badge.unlocked ? 'border-brand-emerald/30' : 'opacity-50 grayscale'}`}>
                 {badge.unlocked && <div className="absolute inset-0 bg-brand-emerald/5"></div>}
                 <div className="text-5xl mb-4 relative z-10">{badge.icon}</div>

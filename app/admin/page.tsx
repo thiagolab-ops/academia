@@ -40,7 +40,7 @@ export default function Admin() {
             { id: "membros", icon: Users, label: "Membros" },
             { id: "financeiro", icon: DollarSign, label: "Financeiro" },
             { id: "config", icon: Settings, label: "Configurações" }
-          ].map(item => (
+          ]?.map(item => (
             <button
               key={item.id}
               onClick={() => setActiveTab(item.id)}
@@ -90,7 +90,7 @@ export default function Admin() {
                 { label: "Receita Mensal", value: "R$ 145k", diff: "+8%", color: "text-brand-cyan" },
                 { label: "Novos Cadastros", value: "84", diff: "+24%", color: "text-brand-violet" },
                 { label: "Taxa de Retenção", value: "92%", diff: "-1%", color: "text-red-500" }
-              ].map((stat, i) => (
+              ]?.map((stat, i) => (
                 <div key={i} className="glass-panel p-6">
                   <p className="text-white/50 text-sm mb-2">{stat.label}</p>
                   <div className="flex items-end gap-3">
@@ -127,7 +127,7 @@ export default function Admin() {
                     { user: "Maria Oliveira", action: "Novo cadastro Pro", time: "Há 12 min" },
                     { user: "Carlos Souza", action: "Cancelou plano", time: "Há 1 hora" },
                     { user: "Ana Costa", action: "Upgrade para Elite", time: "Há 2 horas" },
-                  ].map((activity, i) => (
+                  ]?.map((activity, i) => (
                     <div key={i} className="flex items-start gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-violet to-brand-magenta p-[2px] shrink-0">
                         <div className="w-full h-full rounded-full bg-black"></div>
@@ -163,7 +163,7 @@ export default function Admin() {
                   { name: "Fernanda Lima", email: "fernanda@email.com", plan: "Elite", status: "Ativo", lastAccess: "Ontem, 18:45" },
                   { name: "Roberto Alves", email: "roberto@email.com", plan: "Starter", status: "Inativo", lastAccess: "Há 5 dias" },
                   { name: "Juliana Santos", email: "juliana@email.com", plan: "Pro", status: "Pendente", lastAccess: "Nunca" },
-                ].map((member, i) => (
+                ]?.map((member, i) => (
                   <tr key={i} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                     <td className="p-4">
                       <div className="flex items-center gap-3">

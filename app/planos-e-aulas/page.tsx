@@ -74,7 +74,7 @@ export default function Plans() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {plans.map((plan, i) => (
+          {plans?.map((plan, i) => (
             <Tilt key={i} tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2000} className="h-full">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -106,7 +106,7 @@ export default function Plans() {
                   </Link>
 
                   <div className="mt-8 space-y-4">
-                    {plan.features.map((feature, j) => (
+                    {plan.features?.map((feature, j) => (
                       <div key={j} className="flex items-start gap-3">
                         <div className="mt-0.5 w-5 h-5 rounded-full bg-brand-emerald/20 flex items-center justify-center shrink-0">
                           <Check className="w-3 h-3 text-brand-emerald" />

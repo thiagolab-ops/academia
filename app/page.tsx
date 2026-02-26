@@ -95,7 +95,7 @@ export default function Landing() {
             { icon: Activity, title: "Treinos Inteligentes", desc: "IA adaptando sua carga e evolução em tempo real." },
             { icon: Zap, title: "Gamificação", desc: "Ganhe XP, desbloqueie badges e suba no ranking." },
             { icon: Shield, title: "Estrutura Premium", desc: "Equipamentos de última geração e ambiente imersivo." }
-          ].map((feature, i) => (
+          ]?.map((feature, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 20 }}
