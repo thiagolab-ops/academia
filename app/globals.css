@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Hack para forçar a Vercel a processar o CSS */
+@layer utilities {
+    .force-tailwind-load {
+        display: block;
+    }
+}

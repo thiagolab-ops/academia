@@ -1,4 +1,4 @@
-import "./build.css";
+import "./globals.css";
 
 export const metadata = {
     title: "FitPower",
