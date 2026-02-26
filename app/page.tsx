@@ -112,6 +112,21 @@ export default function Landing() {
             </motion.div>
           ))}
         </div>
+
+        {/* Depoimentos Placeholder */}
+        <div id="depoimentos" className="max-w-7xl mx-auto mt-32 relative z-10 text-center">
+          <h2 className="text-3xl font-bold text-white mb-12">O que nossos alunos dizem</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="glass-panel p-8 text-left">
+              <p className="text-gray-300 italic mb-4">"A melhor estrutura que já treinei. O aplicativo me ajuda a focar no treino em vez de contar séries."</p>
+              <div className="font-bold text-brand-emerald">- João Pedro</div>
+            </div>
+            <div className="glass-panel p-8 text-left">
+              <p className="text-gray-300 italic mb-4">"Ambiente incrível e a gamificação me mantém motivada a não faltar nenhum dia."</p>
+              <div className="font-bold text-brand-emerald">- Amanda S.</div>
+            </div>
+          </div>
+        </div>
       </main>
     </div>
   );
