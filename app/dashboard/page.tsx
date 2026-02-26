@@ -1,5 +1,5 @@
 import { CheckCircle, Trophy, Activity, Flame, Medal, AlertTriangle } from "lucide-react";
-import { getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/src/lib/prisma";
 
