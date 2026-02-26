@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Activity, Dumbbell, Trophy, User, LogOut, Flame, CheckCircle2 } from "lucide-react";
@@ -18,6 +18,11 @@ const data = [
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("treino");
   const [workoutProgress, setWorkoutProgress] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleCompleteExercise = () => {
     setWorkoutProgress(prev => {
@@ -33,6 +38,8 @@ export default function Dashboard() {
       return next;
     });
   };
+
+  if (!isMounted) return null;
 
   return (
     <div className="min-h-screen bg-brand-bg flex">

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send } from "lucide-react";
 
@@ -9,6 +9,13 @@ export default function Chatbot() {
     { text: "Olá! Sou a Luna, assistente da FitPower. Como posso ajudar?", sender: "bot" }
   ]);
   const [input, setInput] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   const handleSend = () => {
     if (!input.trim()) return;

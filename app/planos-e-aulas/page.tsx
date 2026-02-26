@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Check, ArrowLeft } from "lucide-react";
@@ -7,6 +7,13 @@ import Tilt from "react-parallax-tilt";
 
 export default function Plans() {
   const [isAnnual, setIsAnnual] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   const plans = [
     {

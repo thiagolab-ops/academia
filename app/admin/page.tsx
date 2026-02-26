@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Users, LayoutDashboard, DollarSign, Settings, LogOut, Search, Plus, MoreVertical } from "lucide-react";
@@ -17,6 +17,13 @@ const data = [
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   return (
     <div className="min-h-screen bg-brand-bg flex">
@@ -170,8 +177,8 @@ export default function Admin() {
                     <td className="p-4 text-sm font-medium">{member.plan}</td>
                     <td className="p-4">
                       <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-bold ${member.status === 'Ativo' ? 'bg-brand-emerald/20 text-brand-emerald' :
-                          member.status === 'Inativo' ? 'bg-red-500/20 text-red-500' :
-                            'bg-yellow-500/20 text-yellow-500'
+                        member.status === 'Inativo' ? 'bg-red-500/20 text-red-500' :
+                          'bg-yellow-500/20 text-yellow-500'
                         }`}>
                         {member.status}
                       </span>

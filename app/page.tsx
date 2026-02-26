@@ -1,11 +1,20 @@
 "use client";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Activity, Zap, Shield } from "lucide-react";
 import dynamic from 'next/dynamic';
 const Hero3D = dynamic(() => import('../src/components/ui/Hero3D'), { ssr: false });
 
 export default function Landing() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
+
   return (
     <div className="min-h-screen flex flex-col relative">
       <Hero3D />
