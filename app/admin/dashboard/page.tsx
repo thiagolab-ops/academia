@@ -1,6 +1,7 @@
 import { Users, TrendingUp, HandCoins, Activity, AlertCircle } from "lucide-react";
 import prisma from "@/src/lib/prisma";
 import PaymentButton from "@/src/components/ui/PaymentButton";
+import NewMemberForm from "@/src/components/admin/NewMemberForm";
 
 export default async function DashboardPage() {
   const stats = [
@@ -55,73 +56,80 @@ export default async function DashboardPage() {
         })}
       </div>
 
-      {/* Tabela de Inadimplência / Módulo Financeiro de Balcão */}
-      <div className="glass-panel p-6">
-        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <AlertCircle className="w-5 h-5 text-brand-cyan" />
-          Financeiro de Balcão
-        </h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-white/10 text-gray-400 text-sm">
-                <th className="pb-3 px-4 font-medium">Nome do Aluno</th>
-                <th className="pb-3 px-4 font-medium">Valor</th>
-                <th className="pb-3 px-4 font-medium">Vencimento</th>
-                <th className="pb-3 px-4 font-medium">Status</th>
-                <th className="pb-3 px-4 font-medium text-right">Ação</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5 bg-transparent">
-              {payments.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="py-8 text-center text-gray-400 border-none">
-                    Nenhum lançamento no sistema.
-                  </td>
-                </tr>
-              ) : (
-                payments.map((payment) => {
-                  const isLate = payment.status === "PENDING" && new Date(payment.dueDate) < now;
-                  const isPending = payment.status === "PENDING" && new Date(payment.dueDate) >= now;
-                  const isPaid = payment.status === "PAID";
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Formulário de Matrícula (Ocupa 1/3 da tela) */}
+        <div className="lg:col-span-1">
+          <NewMemberForm />
+        </div>
 
-                  return (
-                    <tr key={payment.id} className="hover:bg-white/5 transition-colors group">
-                      <td className="py-4 px-4 text-white font-medium">{payment.user.name || payment.user.email}</td>
-                      <td className="py-4 px-4 font-mono text-gray-300">R$ {payment.amount.toFixed(2)}</td>
-                      <td className="py-4 px-4 text-gray-400 text-sm">
-                        {new Date(payment.dueDate).toLocaleDateString('pt-BR')}
-                      </td>
-                      <td className="py-4 px-4">
-                        {isPaid && (
-                          <span className="px-2 py-1 text-xs rounded-full font-medium bg-brand-emerald/10 text-brand-emerald border border-brand-emerald/20">
-                            Em Dia
-                          </span>
-                        )}
-                        {isLate && (
-                          <span className="px-2 py-1 text-xs rounded-full font-medium bg-red-500/10 text-red-500 border border-red-500/20">
-                            Inadimplente
-                          </span>
-                        )}
-                        {isPending && (
-                          <span className="px-2 py-1 text-xs rounded-full font-medium bg-yellow-500/10 text-yellow-500 border border-yellow-500/20">
-                            Pendente (No Prazo)
-                          </span>
-                        )}
-                      </td>
-                      <td className="py-4 px-4 text-right">
-                        {(isLate || isPending) ? (
-                          <PaymentButton paymentId={payment.id} userId={payment.userId} amount={payment.amount} />
-                        ) : (
-                          <span className="text-gray-500 text-xs">-</span>
-                        )}
-                      </td>
-                    </tr>
-                  )
-                })
-              )}
-            </tbody>
-          </table>
+        {/* Tabela de Inadimplência / Módulo Financeiro de Balcão (Ocupa 2/3 da tela) */}
+        <div className="glass-panel p-6 lg:col-span-2">
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+            <AlertCircle className="w-5 h-5 text-brand-cyan" />
+            Financeiro de Balcão
+          </h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-white/10 text-gray-400 text-sm">
+                  <th className="pb-3 px-4 font-medium">Nome do Aluno</th>
+                  <th className="pb-3 px-4 font-medium">Valor</th>
+                  <th className="pb-3 px-4 font-medium">Vencimento</th>
+                  <th className="pb-3 px-4 font-medium">Status</th>
+                  <th className="pb-3 px-4 font-medium text-right">Ação</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5 bg-transparent">
+                {payments.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-8 text-center text-gray-400 border-none">
+                      Nenhum lançamento no sistema.
+                    </td>
+                  </tr>
+                ) : (
+                  payments.map((payment) => {
+                    const isLate = payment.status === "PENDING" && new Date(payment.dueDate) < now;
+                    const isPending = payment.status === "PENDING" && new Date(payment.dueDate) >= now;
+                    const isPaid = payment.status === "PAID";
+
+                    return (
+                      <tr key={payment.id} className="hover:bg-white/5 transition-colors group">
+                        <td className="py-4 px-4 text-white font-medium">{payment.user.name || payment.user.email}</td>
+                        <td className="py-4 px-4 font-mono text-gray-300">R$ {payment.amount.toFixed(2)}</td>
+                        <td className="py-4 px-4 text-gray-400 text-sm">
+                          {new Date(payment.dueDate).toLocaleDateString('pt-BR')}
+                        </td>
+                        <td className="py-4 px-4">
+                          {isPaid && (
+                            <span className="px-2 py-1 text-xs rounded-full font-medium bg-brand-emerald/10 text-brand-emerald border border-brand-emerald/20">
+                              Em Dia
+                            </span>
+                          )}
+                          {isLate && (
+                            <span className="px-2 py-1 text-xs rounded-full font-medium bg-red-500/10 text-red-500 border border-red-500/20">
+                              Inadimplente
+                            </span>
+                          )}
+                          {isPending && (
+                            <span className="px-2 py-1 text-xs rounded-full font-medium bg-yellow-500/10 text-yellow-500 border border-yellow-500/20">
+                              Pendente (No Prazo)
+                            </span>
+                          )}
+                        </td>
+                        <td className="py-4 px-4 text-right">
+                          {(isLate || isPending) ? (
+                            <PaymentButton paymentId={payment.id} userId={payment.userId} amount={payment.amount} />
+                          ) : (
+                            <span className="text-gray-500 text-xs">-</span>
+                          )}
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
