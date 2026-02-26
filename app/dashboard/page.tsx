@@ -1,90 +1,86 @@
-import { Users, TrendingUp, HandCoins, Activity } from "lucide-react";
+import { CheckCircle, Trophy, Activity, Flame, Medal } from "lucide-react";
 
-export default function DashboardPage() {
-  const stats = [
-    { title: "Total de Alunos", value: "342", icon: Users, change: "+12%" },
-    { title: "Receita (Mês)", value: "R$ 48.250", icon: HandCoins, change: "+5%" },
-    { title: "Check-ins Hoje", value: "128", icon: Activity, change: "Alto fluxo" },
-  ];
+export default function MemberDashboardPage() {
+    const checkIns = [
+        { id: 1, class: "Jiu-Jitsu Adultos - Iniciante", date: "Hoje, 19:00", instructor: "Prof. Marcos" },
+        { id: 2, class: "Crossfit - WOD", date: "25 Fev, 18:30", instructor: "Prof. Sarah" },
+    ];
 
-  const recentStudents = [
-    { id: 1, name: "Lucas Silva", plan: "Ouro", status: "Ativo", joinDate: "Hoje" },
-    { id: 2, name: "Mariana Costa", plan: "Silver", status: "Ativo", joinDate: "Ontem" },
-    { id: 3, name: "Pedro Mendes", plan: "Ouro", status: "Inativo", joinDate: "3 dias atrás" },
-  ];
+    const progress = [
+        { type: "Faixa", value: "Azul - 2 Graus", date: "10 Jan 2026", color: "text-blue-500" },
+        { type: "Peso", value: "78.5kg (-2kg)", date: "15 Fev 2026", color: "text-brand-emerald" },
+    ];
 
-  return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-white mb-2">Visão Geral</h1>
-        <p className="text-gray-400">Bem-vindo de volta ao painel administrativo.</p>
-      </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {stats.map((stat, i) => {
-          const Icon = stat.icon;
-          return (
-            <div key={i} className="glass-panel p-6 flex flex-col relative overflow-hidden group">
-              <div className="absolute -right-6 -top-6 text-white/5 group-hover:text-brand-emerald/5 transition-colors transform group-hover:scale-110 duration-500">
-                <Icon className="w-32 h-32" />
-              </div>
-              <div className="flex justify-between items-start mb-4 relative z-10">
-                <div className="p-3 bg-brand-emerald/10 text-brand-emerald rounded-lg">
-                  <Icon className="w-6 h-6" />
+    return (
+        <div className="space-y-8 p-8 max-w-7xl mx-auto min-h-screen">
+            <div className="flex justify-between items-end mb-12">
+                <div>
+                    <h1 className="text-3xl font-extrabold text-white mb-2">Seu Treino</h1>
+                    <p className="text-gray-400">Acompanhe seu progresso e agenda da academia.</p>
                 </div>
-                <span className="text-sm font-medium text-brand-emerald bg-brand-emerald/10 px-2 py-1 rounded-full">
-                  {stat.change}
-                </span>
-              </div>
-              <div className="relative z-10">
-                <p className="text-sm text-gray-400 mb-1">{stat.title}</p>
-                <h3 className="text-3xl font-extrabold text-white">{stat.value}</h3>
-              </div>
+                <div className="glass-panel px-6 py-3 flex items-center gap-4 hidden sm:flex border-brand-emerald/30">
+                    <Trophy className="w-8 h-8 text-brand-emerald" />
+                    <div>
+                        <div className="text-xs text-gray-400 font-bold uppercase tracking-wider">Level 12</div>
+                        <div className="text-xl text-white font-black">2.450 XP</div>
+                    </div>
+                </div>
             </div>
-          );
-        })}
-      </div>
 
-      {/* Tabela de Ultimos Alunos */}
-      <div className="glass-panel p-6">
-        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-brand-cyan" />
-          Matrículas Recentes
-        </h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-white/10 text-gray-400 text-sm">
-                <th className="pb-3 px-4 font-medium">Nome</th>
-                <th className="pb-3 px-4 font-medium">Plano</th>
-                <th className="pb-3 px-4 font-medium">Status</th>
-                <th className="pb-3 px-4 font-medium">Data</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5 bg-transparent">
-              {recentStudents.map((student) => (
-                <tr key={student.id} className="hover:bg-white/5 transition-colors group">
-                  <td className="py-4 px-4 text-white font-medium">{student.name}</td>
-                  <td className="py-4 px-4">
-                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${student.plan === 'Ouro' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-gray-400/10 text-gray-300'
-                      }`}>
-                      {student.plan}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4">
-                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${student.status === 'Ativo' ? 'bg-brand-emerald/10 text-brand-emerald' : 'bg-red-500/10 text-red-500'
-                      }`}>
-                      {student.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-gray-400 text-sm">{student.joinDate}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {/* Check-ins App */}
+                <section className="glass-panel p-6 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-brand-cyan/5 rounded-bl-[100px] z-0 pointer-events-none" />
+                    <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2 relative z-10">
+                        <CheckCircle className="w-5 h-5 text-brand-cyan" />
+                        Meus Hard Check-ins
+                    </h2>
+                    <div className="space-y-4 relative z-10">
+                        {checkIns.map((check) => (
+                            <div key={check.id} className="bg-white/5 border border-white/10 p-4 rounded-xl flex justify-between items-center hover:bg-white/10 transition-colors cursor-pointer">
+                                <div>
+                                    <h4 className="text-white font-medium">{check.class}</h4>
+                                    <p className="text-sm text-gray-400 mt-1">{check.instructor}</p>
+                                </div>
+                                <div className="text-brand-cyan text-sm font-bold bg-brand-cyan/10 px-3 py-1 rounded-full">
+                                    {check.date}
+                                </div>
+                            </div>
+                        ))}
+                        <button className="w-full mt-4 py-3 bg-white/5 text-white font-semibold rounded-xl hover:bg-white/10 transition-colors border border-dashed border-white/20">
+                            Ver Histórico Completo
+                        </button>
+                    </div>
+                </section>
+
+                {/* Progresso Genérico / SaaS */}
+                <section className="glass-panel p-6 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-32 h-32 bg-brand-emerald/5 rounded-br-[100px] z-0 pointer-events-none" />
+                    <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2 relative z-10">
+                        <Activity className="w-5 h-5 text-brand-emerald" />
+                        Meu Progresso
+                    </h2>
+                    <div className="space-y-4 relative z-10">
+                        {progress.map((prog, idx) => (
+                            <div key={idx} className="flex justify-between items-center p-4 border-b border-white/5 last:border-0 border-dashed">
+                                <div className="flex items-center gap-3">
+                                    <div className="bg-white/5 p-2 rounded-lg">
+                                        {prog.type === 'Faixa' ? <Medal className={`w-5 h-5 ${prog.color}`} /> : <Flame className={`w-5 h-5 ${prog.color}`} />}
+                                    </div>
+                                    <div>
+                                        <div className="text-gray-400 text-sm">{prog.type}</div>
+                                        <div className="text-white font-bold">{prog.value}</div>
+                                    </div>
+                                </div>
+                                <div className="text-sm text-gray-500">{prog.date}</div>
+                            </div>
+                        ))}
+                        <button className="w-full mt-4 py-3 bg-brand-emerald text-black font-bold rounded-xl hover:bg-opacity-90 transition-colors shadow-[0_0_15px_rgba(0,255,157,0.2)]">
+                            Registrar Evolução
+                        </button>
+                    </div>
+                </section>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }

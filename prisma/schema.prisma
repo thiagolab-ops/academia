@@ -9,8 +9,8 @@ datasource db {
 
 enum Role {
   USER    // Visitante/Lead
-  MEMBER  // Aluno Matriculado
-  ADMIN   // Dono/Personal
+  MEMBER  // Aluno
+  ADMIN   // Dono/Gestor
 }
 
 model User {
@@ -20,12 +20,10 @@ model User {
   password      String?
   image         String?
   role          Role      @default(USER)
-  xpPoints      Int       @default(0) // Gamificação
-  planId        String?   // Plano atual (Ouro, Silver)
+  xpPoints      Int       @default(0)
+  planId        String?
   
-  // Relacionamentos
-  workouts      Workout[]
-  measurements  Measurement[]
+  progressLogs  ProgressLog[]
   checkIns      CheckIn[]
   payments      Payment[]
   
@@ -33,32 +31,42 @@ model User {
   updatedAt     DateTime  @updatedAt
 }
 
-model Workout {
+model Modality {
   id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  title       String   // Ex: Treino A - Peito e Tríceps
+  name        String   // Ex: Jiu-Jitsu, Pilates, Musculação
   description String?
-  exercises   Json     // Array de exercícios [{name: "Supino", sets: 3, reps: 12}]
-  assignedBy  String   // Nome do Personal
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  classes     ClassSchedule[]
 }
 
-model Measurement {
+model ClassSchedule {
   id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id])
-  weight      Float    // Peso em Kg
-  bodyFat     Float?   // Percentual de gordura
-  notes       String?
-  date        DateTime @default(now())
+  modalityId  String
+  modality    Modality @relation(fields: [modalityId], references: [id])
+  title       String   // Ex: Jiu-Jitsu Adultos - Iniciante
+  instructor  String   // Nome do professor
+  startTime   DateTime
+  endTime     DateTime
+  capacity    Int      @default(30)
+  
+  checkIns    CheckIn[]
 }
 
 model CheckIn {
+  id              String         @id @default(cuid())
+  userId          String
+  user            User           @relation(fields: [userId], references: [id])
+  classScheduleId String?
+  classSchedule   ClassSchedule? @relation(fields: [classScheduleId], references: [id])
+  date            DateTime       @default(now())
+}
+
+model ProgressLog {
   id          String   @id @default(cuid())
   userId      String
   user        User     @relation(fields: [userId], references: [id])
+  metricType  String   // Ex: "FAIXA", "PESO", "NIVEL_FLEXIBILIDADE"
+  value       String   // Ex: "Faixa Azul - 2 Graus", "75.5kg"
+  notes       String?
   date        DateTime @default(now())
 }
 
@@ -67,7 +75,7 @@ model Payment {
   userId      String
   user        User     @relation(fields: [userId], references: [id])
   amount      Float
-  status      String   @default("PENDING") // PENDING, PAID, OVERDUE
+  status      String   @default("PENDING")
   dueDate     DateTime
   paidAt      DateTime?
 }

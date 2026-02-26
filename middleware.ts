@@ -3,22 +3,23 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
-    // Pega o token da sessão usando o secret configurado
-    const token = await getToken({
-        req,
-        secret: process.env.NEXTAUTH_SECRET
-    });
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+    const path = req.nextUrl.pathname;
 
-    // Se não tem token e a rota é protegida, manda pro login
-    if (!token) {
-        const loginUrl = new URL('/login', req.url);
-        return NextResponse.redirect(loginUrl);
+    // Proteção da área do Admin
+    if (path.startsWith("/admin/dashboard")) {
+        if (!token) return NextResponse.redirect(new URL("/admin/login", req.url));
+        if (token.role !== "ADMIN") return NextResponse.redirect(new URL("/dashboard", req.url)); // Se for aluno tentando acessar admin
+    }
+
+    // Proteção da área do Aluno
+    if (path.startsWith("/dashboard")) {
+        if (!token) return NextResponse.redirect(new URL("/login", req.url));
     }
 
     return NextResponse.next();
 }
 
-// O matcher garante que o middleware SÓ rode no dashboard e não quebre rotas públicas
 export const config = {
-    matcher: ["/dashboard/:path*"]
+    matcher: ["/dashboard/:path*", "/admin/dashboard/:path*"]
 };
