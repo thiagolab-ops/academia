@@ -1,17 +1,26 @@
-import { Users, TrendingUp, HandCoins, Activity } from "lucide-react";
+import { Users, TrendingUp, HandCoins, Activity, AlertCircle } from "lucide-react";
+import prisma from "@/src/lib/prisma";
+import PaymentButton from "@/src/components/ui/PaymentButton";
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
   const stats = [
     { title: "Total de Alunos", value: "342", icon: Users, change: "+12%" },
     { title: "Receita (Mês)", value: "R$ 48.250", icon: HandCoins, change: "+5%" },
     { title: "Check-ins Hoje", value: "128", icon: Activity, change: "Alto fluxo" },
   ];
 
-  const recentStudents = [
-    { id: 1, name: "Lucas Silva", plan: "Ouro", status: "Ativo", joinDate: "Hoje" },
-    { id: 2, name: "Mariana Costa", plan: "Silver", status: "Ativo", joinDate: "Ontem" },
-    { id: 3, name: "Pedro Mendes", plan: "Ouro", status: "Inativo", joinDate: "3 dias atrás" },
-  ];
+  // Buscando os pagamentos pendentes e pagos da base
+  const payments = await prisma.payment.findMany({
+    include: {
+      user: true,
+    },
+    orderBy: {
+      dueDate: 'asc'
+    },
+    take: 10 // Limite para o dashboard
+  });
+
+  const now = new Date();
 
   return (
     <div className="space-y-8">
@@ -46,41 +55,71 @@ export default function DashboardPage() {
         })}
       </div>
 
-      {/* Tabela de Ultimos Alunos */}
+      {/* Tabela de Inadimplência / Módulo Financeiro de Balcão */}
       <div className="glass-panel p-6">
         <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-brand-cyan" />
-          Matrículas Recentes
+          <AlertCircle className="w-5 h-5 text-brand-cyan" />
+          Financeiro de Balcão
         </h2>
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-white/10 text-gray-400 text-sm">
-                <th className="pb-3 px-4 font-medium">Nome</th>
-                <th className="pb-3 px-4 font-medium">Plano</th>
+                <th className="pb-3 px-4 font-medium">Nome do Aluno</th>
+                <th className="pb-3 px-4 font-medium">Valor</th>
+                <th className="pb-3 px-4 font-medium">Vencimento</th>
                 <th className="pb-3 px-4 font-medium">Status</th>
-                <th className="pb-3 px-4 font-medium">Data</th>
+                <th className="pb-3 px-4 font-medium text-right">Ação</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 bg-transparent">
-              {recentStudents.map((student) => (
-                <tr key={student.id} className="hover:bg-white/5 transition-colors group">
-                  <td className="py-4 px-4 text-white font-medium">{student.name}</td>
-                  <td className="py-4 px-4">
-                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${student.plan === 'Ouro' ? 'bg-yellow-500/10 text-yellow-500' : 'bg-gray-400/10 text-gray-300'
-                      }`}>
-                      {student.plan}
-                    </span>
+              {payments.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="py-8 text-center text-gray-400 border-none">
+                    Nenhum lançamento no sistema.
                   </td>
-                  <td className="py-4 px-4">
-                    <span className={`px-2 py-1 text-xs rounded-full font-medium ${student.status === 'Ativo' ? 'bg-brand-emerald/10 text-brand-emerald' : 'bg-red-500/10 text-red-500'
-                      }`}>
-                      {student.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 text-gray-400 text-sm">{student.joinDate}</td>
                 </tr>
-              ))}
+              ) : (
+                payments.map((payment) => {
+                  const isLate = payment.status === "PENDING" && new Date(payment.dueDate) < now;
+                  const isPending = payment.status === "PENDING" && new Date(payment.dueDate) >= now;
+                  const isPaid = payment.status === "PAID";
+
+                  return (
+                    <tr key={payment.id} className="hover:bg-white/5 transition-colors group">
+                      <td className="py-4 px-4 text-white font-medium">{payment.user.name || payment.user.email}</td>
+                      <td className="py-4 px-4 font-mono text-gray-300">R$ {payment.amount.toFixed(2)}</td>
+                      <td className="py-4 px-4 text-gray-400 text-sm">
+                        {new Date(payment.dueDate).toLocaleDateString('pt-BR')}
+                      </td>
+                      <td className="py-4 px-4">
+                        {isPaid && (
+                          <span className="px-2 py-1 text-xs rounded-full font-medium bg-brand-emerald/10 text-brand-emerald border border-brand-emerald/20">
+                            Em Dia
+                          </span>
+                        )}
+                        {isLate && (
+                          <span className="px-2 py-1 text-xs rounded-full font-medium bg-red-500/10 text-red-500 border border-red-500/20">
+                            Inadimplente
+                          </span>
+                        )}
+                        {isPending && (
+                          <span className="px-2 py-1 text-xs rounded-full font-medium bg-yellow-500/10 text-yellow-500 border border-yellow-500/20">
+                            Pendente (No Prazo)
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-4 px-4 text-right">
+                        {(isLate || isPending) ? (
+                          <PaymentButton paymentId={payment.id} userId={payment.userId} amount={payment.amount} />
+                        ) : (
+                          <span className="text-gray-500 text-xs">-</span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                })
+              )}
             </tbody>
           </table>
         </div>

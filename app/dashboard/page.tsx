@@ -1,6 +1,26 @@
-import { CheckCircle, Trophy, Activity, Flame, Medal } from "lucide-react";
+import { CheckCircle, Trophy, Activity, Flame, Medal, AlertTriangle } from "lucide-react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import prisma from "@/src/lib/prisma";
 
-export default function MemberDashboardPage() {
+export default async function MemberDashboardPage() {
+    const session = await getServerSession(authOptions);
+
+    let isLate = false;
+    if (session?.user?.email) {
+        const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+        if (user) {
+            const latePayment = await prisma.payment.findFirst({
+                where: {
+                    userId: user.id,
+                    status: "PENDING",
+                    dueDate: { lt: new Date() }
+                }
+            });
+            if (latePayment) isLate = true;
+        }
+    }
+
     const checkIns = [
         { id: 1, class: "Jiu-Jitsu Adultos - Iniciante", date: "Hoje, 19:00", instructor: "Prof. Marcos" },
         { id: 2, class: "Crossfit - WOD", date: "25 Fev, 18:30", instructor: "Prof. Sarah" },
@@ -13,6 +33,19 @@ export default function MemberDashboardPage() {
 
     return (
         <div className="space-y-8 p-8 max-w-7xl mx-auto min-h-screen">
+            {isLate && (
+                <div className="bg-red-500/10 border border-red-500/30 p-4 rounded-xl flex items-start gap-4 shadow-[0_0_20px_rgba(239,68,68,0.15)] relative overflow-hidden mb-8">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-bl-full pointer-events-none" />
+                    <AlertTriangle className="w-6 h-6 text-red-500 shrink-0 mt-0.5" />
+                    <div>
+                        <h3 className="text-red-500 font-bold mb-1">Acesso Temporariamente Suspenso</h3>
+                        <p className="text-red-400 text-sm">
+                            Sua mensalidade consta como vencida em nosso sistema. Por favor, regularize o pagamento diretamente na recepção da academia para não perder o acesso às aulas e manter o seu XP.
+                        </p>
+                    </div>
+                </div>
+            )}
+
             <div className="flex justify-between items-end mb-12">
                 <div>
                     <h1 className="text-3xl font-extrabold text-white mb-2">Seu Treino</h1>
