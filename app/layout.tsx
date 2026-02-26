@@ -6,7 +6,7 @@ export const metadata = {
 };
 
 import { Providers } from "./Providers";
-import Chatbot from "@/components/ui/Chatbot";
+import Chatbot from "@/src/components/ui/Chatbot";
 
 export default function RootLayout({
     children,
