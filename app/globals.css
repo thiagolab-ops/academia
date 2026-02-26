@@ -6,17 +6,29 @@
 @source "../pages";
 @source "../src";
 
-/* O Tailwind v4 usa CSS-First para o tema. Vamos restaurar o tema padrão aqui */
 @theme {
-    --color-primary: #1f66f4;
-    --color-background-light: #f5f6f8;
-    --color-background-dark: #101622;
+    --color-brand-emerald: #00ff9d;
+    /* Verde Neon */
+    --color-brand-cyan: #00e5ff;
+    --color-brand-violet: #8a2be2;
+
+    --font-heading: "Inter", "sans-serif";
+    /* Ajuste para a fonte correta se necessário */
 }
 
+@layer base {
+    body {
+        @apply bg-black text-white antialiased;
+        background-color: #050505;
+    }
+}
 
-/* Hack para forçar a Vercel a processar o CSS */
-@layer utilities {
-    .force-tailwind-load {
-        display: block;
+@layer components {
+    .glass-panel {
+        @apply bg-white/5 border border-white/10 backdrop-blur-lg rounded-3xl;
+    }
+
+    .text-gradient {
+        @apply text-transparent bg-clip-text bg-gradient-to-r from-brand-emerald to-brand-cyan;
     }
 }
